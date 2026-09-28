@@ -3,6 +3,7 @@
   hosts: all
   vars_files:
     - ../../../tests/vars/common_upgrade_vars.yml
+    - ../../../tests/vars/common_test_vars.yml
     - "{{ lookup('env', 'TMT_PLAN_DATA') }}/vars/repo_urls.yml"
   vars:
     remediation_name: "{{ lookup('env', 'REMEDIATION_NAME') }}"

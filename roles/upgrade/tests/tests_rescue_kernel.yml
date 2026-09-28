@@ -20,6 +20,9 @@
       - initramfs-6.0.0-1.el9.img
     # Harmless stand-in for 51-dracut-rescue.install: echoes its arguments.
     __test_install_stub: echo
+  vars_files:
+    - ../../../tests/vars/common_test_vars.yml
+    - "{{ lookup('env', 'TMT_PLAN_DATA') }}/vars/repo_urls.yml"
   tasks:
     - name: Test | Create temporary boot directory
       ansible.builtin.tempfile:
@@ -41,7 +44,7 @@
 
             - name: Test | Scenario 1 | Run recreate-rescue-kernel
               ansible.builtin.include_role:
-                name: infra.leapp.upgrade
+                name: "{{ collection_namespace }}.leapp.upgrade"
                 tasks_from: recreate-rescue-kernel.yml
               vars:
                 __leapp_rescue_boot_path: "{{ __test_boot_dir.path }}"
@@ -86,7 +89,7 @@
 
             - name: Test | Scenario 2 | Run recreate-rescue-kernel
               ansible.builtin.include_role:
-                name: infra.leapp.upgrade
+                name: "{{ collection_namespace }}.leapp.upgrade"
                 tasks_from: recreate-rescue-kernel.yml
               vars:
                 __leapp_rescue_boot_path: "{{ __test_boot_dir.path }}"
@@ -115,7 +118,7 @@
 
             - name: Test | Scenario 3 | Run recreate-rescue-kernel with a bogus package
               ansible.builtin.include_role:
-                name: infra.leapp.upgrade
+                name: "{{ collection_namespace }}.leapp.upgrade"
                 tasks_from: recreate-rescue-kernel.yml
               vars:
                 __leapp_rescue_boot_path: "{{ __test_boot_dir.path }}"
@@ -162,7 +165,7 @@
 
             - name: Test | Scenario 4 | Run recreate-rescue-kernel
               ansible.builtin.include_role:
-                name: infra.leapp.upgrade
+                name: "{{ collection_namespace }}.leapp.upgrade"
                 tasks_from: recreate-rescue-kernel.yml
               vars:
                 __leapp_rescue_boot_path: "{{ __test_boot_dir.path }}"

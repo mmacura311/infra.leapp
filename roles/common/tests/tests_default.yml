@@ -3,12 +3,15 @@
   hosts: all
   vars:
     job_name: test_common
+  vars_files:
+    - ../../../tests/vars/common_test_vars.yml
+    - "{{ lookup('env', 'TMT_PLAN_DATA') }}/vars/repo_urls.yml"
   tasks:
     - name: Test | Run common
       block:
         - name: Test | Run role common
           ansible.builtin.include_role:
-            name: infra.leapp.common
+            name: "{{ collection_namespace }}.leapp.common"
       rescue:
         - name: Test | Check error
           ansible.builtin.debug:
@@ -25,7 +28,7 @@
       always:
         - name: Test | Include cleanup logs
           ansible.builtin.include_role:
-            name: infra.leapp.common
+            name: "{{ collection_namespace }}.leapp.common"
             tasks_from: cleanup_logs.yml
           tags: tests::cleanup
 

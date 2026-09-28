@@ -10,6 +10,9 @@
   hosts: all
   vars:
     job_name: test_init_leapp_log
+  vars_files:
+    - ../../../tests/vars/common_test_vars.yml
+    - "{{ lookup('env', 'TMT_PLAN_DATA') }}/vars/repo_urls.yml"
   tasks:
     # Each scenario runs under its own numbered scenario subfolder within the
     # temp folder so scenarios are fully isolated and never read each other's
@@ -31,7 +34,7 @@
           block:
             - name: Test | Scenario 1 | Include init_leapp_log
               ansible.builtin.include_role:
-                name: infra.leapp.common
+                name: "{{ collection_namespace }}.leapp.common"
                 tasks_from: init_leapp_log.yml
 
             - name: Test | Scenario 1 | Slurp log file
@@ -97,7 +100,7 @@
           block:
             - name: Test | Scenario 2 | Include init_leapp_log
               ansible.builtin.include_role:
-                name: infra.leapp.common
+                name: "{{ collection_namespace }}.leapp.common"
                 tasks_from: init_leapp_log.yml
 
             - name: Test | Scenario 2 | Slurp log file
@@ -148,7 +151,7 @@
               block:
                 - name: Test | Scenario 3 | Include init_leapp_log
                   ansible.builtin.include_role:
-                    name: infra.leapp.common
+                    name: "{{ collection_namespace }}.leapp.common"
                     tasks_from: init_leapp_log.yml
 
                 - name: Test | Scenario 3 | Fail if init unexpectedly succeeded

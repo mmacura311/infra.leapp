@@ -1,0 +1,4 @@
+---
+# General Common variables for testing
+collection_namespace: "{{ lookup('ansible.builtin.env', 'COLLECTION_NAMESPACE') | default('infra', true) }}"
+...

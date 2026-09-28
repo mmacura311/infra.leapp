@@ -4,6 +4,9 @@
   vars:
     job_name: test_analysis
     leapp_preupg_opts: "--debug"
+  vars_files:
+    - ../../../tests/vars/common_test_vars.yml
+    - "{{ lookup('env', 'TMT_PLAN_DATA') }}/vars/repo_urls.yml"
   tasks:
     - name: See if /dev/log exists for the fingerprint check
       ansible.builtin.stat:
@@ -19,7 +22,7 @@
       block:
         - name: Test | Run role analysis
           ansible.builtin.include_role:
-            name: infra.leapp.analysis
+            name: "{{ collection_namespace }}.leapp.analysis"
 
         # look for the exact module invocation, not some other message that might contain the string
         - name: Check system journal contains role fingerprints
@@ -28,17 +31,17 @@
             cmd: >-
               set -eo pipefail;
               journalctl --since "{{ __journal_start_time }}" --no-pager |
-              grep -v " Invoked with" | grep "sr_fingerprint.*begin infra.leapp:analysis" ||
+              grep -v " Invoked with" | grep "sr_fingerprint.*begin {{ collection_namespace }}.leapp:analysis" ||
               { echo ERROR: BEGIN fingerprint not found; exit 1; };
               journalctl --since "{{ __journal_start_time }}" --no-pager |
-              grep -v " Invoked with" | grep "sr_fingerprint.*success infra.leapp:analysis" ||
+              grep -v " Invoked with" | grep "sr_fingerprint.*success {{ collection_namespace }}.leapp:analysis" ||
               { echo ERROR: SUCCESS fingerprint not found; exit 1; }
           changed_when: false
           when: __register_dev_log.stat.exists
       always:
         - name: Test | Include cleanup logs
           ansible.builtin.include_role:
-            name: infra.leapp.common
+            name: "{{ collection_namespace }}.leapp.common"
             tasks_from: cleanup_logs.yml
           tags: tests::cleanup
 

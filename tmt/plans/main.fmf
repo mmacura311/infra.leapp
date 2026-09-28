@@ -32,6 +32,16 @@ adjust:
     environment-file+:
       - https://<GitLab CEE RedHat instance>/oamg/tests-ansible-collection-leapp/-/raw/main/leapp_coll_env_file.yml
 
+  - when: initiator == github-ci
+    environment+:
+      COLLECTION_NAMESPACE: "infra"
+
+  - when: >-
+      initiator == rhel-ci
+      or initiator is not defined
+    environment+:
+      COLLECTION_NAMESPACE: "redhat"
+
   # Per-version mappings for managed node.
   # In CI, SR_ANSIBLE_VER is also passed by the workflow from test-matrix.json.
   - when: managed_node == rhel7

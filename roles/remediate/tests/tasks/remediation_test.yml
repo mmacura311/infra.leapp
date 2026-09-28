@@ -9,7 +9,7 @@
     - name: remediation_test | Run first analysis
       ansible.builtin.include_tasks: ../../../../tests/tasks/run_role_with_clear_facts.yml
       vars:
-        __leapp_test_rolename: infra.leapp.analysis
+        __leapp_test_rolename: "{{ collection_namespace }}.leapp.analysis"
         __sr_public: true
 
     - name: remediation_test | Flush handlers
@@ -62,7 +62,7 @@
         - name: remediation_test | Run remediate role
           ansible.builtin.include_tasks: ../../../../tests/tasks/run_role_with_clear_facts.yml
           vars:
-            __leapp_test_rolename: infra.leapp.remediate
+            __leapp_test_rolename: "{{ collection_namespace }}.leapp.remediate"
             __sr_public: true
 
     - name: remediation_test | Check if verify file exists
@@ -82,7 +82,7 @@
     - name: remediation_test | Run second analysis
       ansible.builtin.include_tasks: ../../../../tests/tasks/run_role_with_clear_facts.yml
       vars:
-        __leapp_test_rolename: infra.leapp.analysis
+        __leapp_test_rolename: "{{ collection_namespace }}.leapp.analysis"
         __sr_public: true
 
     - name: remediation_test | Validate post-remediation analysis outputs

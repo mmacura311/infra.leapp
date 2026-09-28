@@ -3,6 +3,7 @@
   hosts: all
   vars_files:
     - ../../../tests/vars/common_upgrade_vars.yml
+    - ../../../tests/vars/common_test_vars.yml
     - "{{ lookup('env', 'TMT_PLAN_DATA') }}/vars/repo_urls.yml"
   vars:
     leapp_upgrade_type: custom
@@ -68,7 +69,7 @@
         - name: Test | Run role analysis
           ansible.builtin.include_tasks: ../../../tests/tasks/run_role_with_clear_facts.yml
           vars:
-            __leapp_test_rolename: infra.leapp.analysis
+            __leapp_test_rolename: "{{ collection_namespace }}.leapp.analysis"
             leapp_workdir_controller: "{{ workdir_controller_tempfile.path }}"
 
         - name: Test | Validate hostvars file
