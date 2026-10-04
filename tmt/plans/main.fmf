@@ -38,6 +38,7 @@ adjust:
 
   - when: >-
       initiator == rhel-ci
+      or initiator == downstream
       or initiator is not defined
     environment+:
       COLLECTION_NAMESPACE: "redhat"
@@ -76,7 +77,7 @@ adjust:
       LOCALVM_CONTROL_NODE_IMAGE: ${RHEL_10_latest_image}
 
   # ---- Testing Farm (CI) ----
-  - when: initiator == github-ci and infra == testing-farm or initiator == rhel-ci
+  - when: infra == testing-farm or initiator == rhel-ci
     provision+:
       - name: control-node01
         role: control_node
