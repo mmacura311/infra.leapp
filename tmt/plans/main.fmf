@@ -1,4 +1,5 @@
 summary: Base plan for infra.leapp tests
+# pointless comment
 adjust:
   # File that provides URLs for images and repositories
   - when: initiator is not defined
